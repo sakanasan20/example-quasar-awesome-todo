@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <q-list bordered>
+    <q-list bordered separator>
       <task
         v-for="(task, key) in tasks"
         :key="key"
@@ -13,7 +13,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import task from 'components/Tasks/task.vue'
+  import task from 'components/Tasks/Task.vue'
 
   export default {
     computed: {
