@@ -22,7 +22,12 @@
     <q-item-section side>
       <div class="row">
         <div class="column justify-center">
-          <q-icon name="event" size="18px" class="q-mr-xs"/>
+          <q-icon
+            v-if="task.dueDate"
+            name="event"
+            size="18px"
+            class="q-mr-xs"
+          />
         </div>
 
         <div class="column">
