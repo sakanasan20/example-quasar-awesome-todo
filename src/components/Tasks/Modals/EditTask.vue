@@ -1,6 +1,6 @@
 <template>
   <q-card style="width: 400px; max-width: 80vw;">
-    <modal-header>Add Task</modal-header>
+    <modal-header>Edit Task</modal-header>
 
     <q-form
       @submit.prevent="onSubmit"
@@ -40,21 +40,20 @@
   import modalButtons from 'components/Tasks/Modals/Shared/ModalButtons.vue'
 
   export default {
+    mounted() {
+      this.taskToSubmit = Object.assign({}, this.task)
+    },
+    props: ['task', 'id'],
     components: {
       modalHeader, modalTaskName, modalDueDate, modalDueTime, modalButtons
     },
     data() {
       return {
-        taskToSubmit: {
-          name: '',
-          dueDate: '',
-          dueTime: '',
-          completed: false,
-        }
+        taskToSubmit: {}
       }
     },
     methods: {
-      ...mapActions('tasks', ['addTask']),
+      ...mapActions('tasks', ['updateTask']),
       onSubmit() {
         this.$refs.modalTaskName.$refs.name.validate()
         if (!this.$refs.modalTaskName.name.hasError) {
@@ -67,7 +66,7 @@
         this.taskToSubmit.dueDate = ''
       },
       submitTask() {
-        this.addTask(this.taskToSubmit)
+        this.updateTask({ id: this.id, updates: this.taskToSubmit })
         this.$emit('close')
       },
       clearDueTime() {

@@ -49,23 +49,51 @@
     </q-item-section>
 
     <q-item-section side>
-      <q-btn
-        @click.stop="promptToDelete(id)"
-        flat
-        round
-        dense
-        color="red"
-        icon="delete"
-      />
+      <div class="row">
+        <q-btn
+          @click.stop="showEditTask = true"
+          flat
+          round
+          dense
+          color="primary"
+          icon="edit"
+        />
+
+        <q-btn
+          @click.stop="promptToDelete(id)"
+          flat
+          round
+          dense
+          color="red"
+          icon="delete"
+        />
+      </div>
     </q-item-section>
+
+    <q-dialog v-model="showEditTask">
+      <editTask
+        :task="task"
+        :id="id"
+        @close="showEditTask = false"
+      />
+    </q-dialog>
   </q-item>
 </template>
 
 <script>
   import { mapActions } from 'vuex'
+  import editTask from 'components/Tasks/Modals/EditTask.vue'
 
   export default {
     props: ['task', 'id'],
+    components: {
+      editTask
+    },
+    data() {
+      return {
+        showEditTask: false
+      }
+    },
     methods: {
       ...mapActions('tasks', ['updateTask', 'deleteTask']),
       promptToDelete(id) {

@@ -35,6 +35,9 @@
   import addTask from 'components/Tasks/Modals/AddTask.vue'
 
   export default {
+    components: {
+      task, addTask
+    },
     data() {
       return {
         showAddTask: false
@@ -42,9 +45,6 @@
     },
     computed: {
       ...mapGetters('tasks', ['tasks'])
-    },
-    components: {
-      task, addTask
     }
   }
 </script>
