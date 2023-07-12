@@ -1,5 +1,5 @@
 <template>
-  <q-card style="width: 400px; max-width: 80vw;">
+  <q-card>
     <modal-header>Edit Task</modal-header>
 
     <q-form

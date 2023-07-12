@@ -1,13 +1,13 @@
 <template>
   <q-btn
-    label="Save"
-    color="primary"
-    type="submit"
-  />
-  <q-btn
     label="Reset"
     color="primary"
     type="reset"
+  />
+  <q-btn
+    label="Save"
+    color="primary"
+    type="submit"
   />
 </template>
 

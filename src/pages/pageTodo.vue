@@ -2,6 +2,7 @@
   <q-page class="q-pa-md">
     <div class="row q-mb-lg">
       <search />
+      <sort />
     </div>
 
     <p
@@ -49,13 +50,14 @@
   import tasksCompleted from 'components/Tasks/TasksCompleted.vue'
   import noTasks from 'components/Tasks/NoTasks.vue'
   import search from 'components/Tasks/Tools/Search.vue'
+  import sort from 'components/Tasks/Tools/Sort.vue'
 
   export default {
     mounted() {
       events.on('showAddTask', () => { this.showAddTask = true })
     },
     components: {
-      addTask, tasksTodo, tasksCompleted, noTasks, search
+      addTask, tasksTodo, tasksCompleted, noTasks, search, sort
     },
     data() {
       return {
