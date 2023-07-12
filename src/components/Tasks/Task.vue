@@ -45,7 +45,7 @@
             class="row justify-end"
             caption
           >
-            {{ task.dueTime }}
+            {{ taskDueTime }}
           </q-item-label>
         </div>
       </div>
@@ -85,7 +85,7 @@
 
 <script>
   import { date } from 'quasar'
-  import { mapState, mapActions } from 'vuex'
+  import { mapState, mapActions, mapGetters } from 'vuex'
   import editTask from 'components/Tasks/Modals/EditTask.vue'
 
   const { addToDate, formatDate } = date
@@ -102,6 +102,7 @@
     },
     computed: {
       ...mapState('tasks', ['search']),
+      ...mapGetters('settings', ['settings']),
       niceDate() {
         return (value) => formatDate(value, 'MMM D')
       },
@@ -113,6 +114,12 @@
           }
           return value
         }
+      },
+      taskDueTime() {
+        if (this.settings.show12HourTimeFormat) {
+          return formatDate(this.task.dueDate + ' ' + this.task.dueTime, 'h:mmA')
+        }
+        return this.task.dueTime
       }
     },
     methods: {
