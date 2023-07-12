@@ -5,6 +5,14 @@
         <q-toolbar-title class="absolute-center">
           Awesome Todo
         </q-toolbar-title>
+
+        <q-btn
+          to="/auth"
+          flat
+          icon-right="account_circle"
+          label="Login"
+          class="absolute-right"
+        />
       </q-toolbar>
     </q-header>
 
@@ -31,12 +39,12 @@
     >
       <q-list dark>
         <q-item-label header>Navigation</q-item-label>
-        <q-item 
+        <q-item
           v-for="nav in navs"
           :key="nav"
-          :to="nav.to" 
+          :to="nav.to"
           class="text-grey-4"
-          exact 
+          exact
           clickable
         >
           <q-item-section avatar>
@@ -59,13 +67,13 @@
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
-  name: 'MainLayout', 
+  name: 'MainLayout',
 
   data () {
     return {
-      leftDrawerOpen: false, 
+      leftDrawerOpen: false,
       navs: [
-        { label: 'Todo', icon: 'list', to: '/' }, 
+        { label: 'Todo', icon: 'list', to: '/' },
         { label: 'Settings', icon: 'settings', to: '/settings' }
       ]
     }
@@ -84,5 +92,5 @@ export default defineComponent({
     .q-router-link--exact-active {
       color: white !important;
     }
-  } 
+  }
 </style>
