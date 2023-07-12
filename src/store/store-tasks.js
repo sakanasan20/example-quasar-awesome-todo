@@ -19,6 +19,96 @@ const state = {
       completed: false,
       dueDate: '2023/07/09',
       dueTime: '16:00'
+    },
+    'ID4': {
+      name: 'Go to shop',
+      completed: false,
+      dueDate: '2023/07/07',
+      dueTime: '18:00'
+    },
+    'ID5': {
+      name: 'Get banana',
+      completed: true,
+      dueDate: '2023/07/08',
+      dueTime: '19:00'
+    },
+    'ID6': {
+      name: 'Get apple',
+      completed: false,
+      dueDate: '2023/07/09',
+      dueTime: '16:00'
+    },
+    'ID7': {
+      name: 'Go to shop',
+      completed: false,
+      dueDate: '2023/07/07',
+      dueTime: '18:00'
+    },
+    'ID8': {
+      name: 'Get banana',
+      completed: true,
+      dueDate: '2023/07/08',
+      dueTime: '19:00'
+    },
+    'ID9': {
+      name: 'Get apple',
+      completed: false,
+      dueDate: '2023/07/09',
+      dueTime: '16:00'
+    },
+    'ID10': {
+      name: 'Go to shop',
+      completed: false,
+      dueDate: '2023/07/07',
+      dueTime: '18:00'
+    },
+    'ID11': {
+      name: 'Get banana',
+      completed: true,
+      dueDate: '2023/07/08',
+      dueTime: '19:00'
+    },
+    'ID12': {
+      name: 'Get apple',
+      completed: false,
+      dueDate: '2023/07/09',
+      dueTime: '16:00'
+    },
+    'ID13': {
+      name: 'Go to shop',
+      completed: false,
+      dueDate: '2023/07/07',
+      dueTime: '18:00'
+    },
+    'ID14': {
+      name: 'Get banana',
+      completed: true,
+      dueDate: '2023/07/08',
+      dueTime: '19:00'
+    },
+    'ID15': {
+      name: 'Get apple',
+      completed: false,
+      dueDate: '2023/07/09',
+      dueTime: '16:00'
+    },
+    'ID': {
+      name: 'Go to shop',
+      completed: false,
+      dueDate: '2023/07/07',
+      dueTime: '18:00'
+    },
+    'ID': {
+      name: 'Get banana',
+      completed: true,
+      dueDate: '2023/07/08',
+      dueTime: '19:00'
+    },
+    'ID': {
+      name: 'Get apple',
+      completed: false,
+      dueDate: '2023/07/09',
+      dueTime: '16:00'
     }
   },
   search: '',

@@ -4,6 +4,8 @@
     :class="!task.completed ? 'bg-orange-1' : 'bg-green-1' "
     v-ripple
     clickable
+    v-touch-hold:1000.mouse="showEditTaskModal"
+    v-touch-hold:1000:1="showEditTaskModal"
   >
     <q-item-section side top>
       <q-checkbox
@@ -14,8 +16,9 @@
 
     <q-item-section>
       <q-item-label
-        :class="{ 'text-strike' : task.completed }">
-        {{ task.name }}
+        :class="{ 'text-strike' : task.completed }"
+        v-html="searchHighlight(task.name)"
+      >
       </q-item-label>
     </q-item-section>
 
@@ -35,7 +38,7 @@
             class="row justify-end"
             caption
           >
-            {{ task.dueDate }}
+            {{ niceDate(task.dueDate) }}
           </q-item-label>
 
           <q-item-label
@@ -51,7 +54,7 @@
     <q-item-section side>
       <div class="row">
         <q-btn
-          @click.stop="showEditTask = true"
+          @click.stop="showEditTaskModal"
           flat
           round
           dense
@@ -81,8 +84,11 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { date } from 'quasar'
+  import { mapState, mapActions } from 'vuex'
   import editTask from 'components/Tasks/Modals/EditTask.vue'
+
+  const { addToDate, formatDate } = date
 
   export default {
     props: ['task', 'id'],
@@ -92,6 +98,21 @@
     data() {
       return {
         showEditTask: false
+      }
+    },
+    computed: {
+      ...mapState('tasks', ['search']),
+      niceDate() {
+        return (value) => formatDate(value, 'MMM D')
+      },
+      searchHighlight() {
+        return (value, search = this.search) => {
+          let searchRegExp = new RegExp(search, 'ig')
+          if (search) {
+            return value.replace(searchRegExp, (match) => '<span class="bg-yellow-6">' + match + '</span>')
+          }
+          return value
+        }
       }
     },
     methods: {
@@ -105,6 +126,9 @@
         }).onOk(() => {
           this.deleteTask(id)
         })
+      },
+      showEditTaskModal() {
+        this.showEditTask = true
       }
     }
   }

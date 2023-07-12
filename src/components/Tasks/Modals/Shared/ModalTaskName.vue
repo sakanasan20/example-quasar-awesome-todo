@@ -8,6 +8,7 @@
       label="Task Name"
       :rules="[val => !!val || 'Field is required']"
       ref="name"
+      v-select-all
     >
       <template v-slot:append>
         <q-icon
@@ -22,8 +23,13 @@
 </template>
 
 <script>
+  import { selectAll } from 'src/directives/directive-select-all'
+
   export default {
     props: ['name'],
+    directives: {
+      selectAll
+    },
     computed: {
       nameValue: {
         get() {
