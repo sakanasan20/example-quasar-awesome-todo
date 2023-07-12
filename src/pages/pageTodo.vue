@@ -1,17 +1,27 @@
 <template>
   <q-page class="q-pa-md">
+    <div class="row q-mb-lg">
+      <search />
+    </div>
+
+    <p
+      v-if="search
+            && !Object.keys(tasksTodo).length
+            && !Object.keys(tasksCompleted).length"
+    >No search results.</p>
+
     <no-tasks
-      v-if="!Object.keys(tasksTodo).length"
+      v-if="!Object.keys(tasksTodo).length && !search"
       @showAddTask="showAddTask = true"
     />
 
     <tasks-todo
-      v-else
+      v-if="Object.keys(tasksTodo).length"
       :tasksTodo="tasksTodo"
     />
 
     <tasks-completed
-    v-if="Object.keys(tasksCompleted).length"
+      v-if="Object.keys(tasksCompleted).length"
       :tasksCompleted="tasksCompleted"
     />
 
@@ -33,18 +43,19 @@
 
 <script>
   import { events } from 'boot/events'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapState } from 'vuex'
   import addTask from 'components/Tasks/Modals/AddTask.vue'
   import tasksTodo from 'components/Tasks/TasksTodo.vue'
   import tasksCompleted from 'components/Tasks/TasksCompleted.vue'
   import noTasks from 'components/Tasks/NoTasks.vue'
+  import search from 'components/Tasks/Tools/Search.vue'
 
   export default {
     mounted() {
       events.on('showAddTask', () => { this.showAddTask = true })
     },
     components: {
-      addTask, tasksTodo, tasksCompleted, noTasks
+      addTask, tasksTodo, tasksCompleted, noTasks, search
     },
     data() {
       return {
@@ -52,7 +63,8 @@
       }
     },
     computed: {
-      ...mapGetters('tasks', ['tasksTodo', 'tasksCompleted'])
+      ...mapGetters('tasks', ['tasksTodo', 'tasksCompleted']),
+      ...mapState('tasks', ['search'])
     }
   }
 </script>
