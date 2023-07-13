@@ -6,7 +6,7 @@
   "author": "Nick <nick.chen@cmp.com.tw>",
   "private": true,
   "scripts": {
-    "test": "echo \"No test specified\" && exit 0",
+    "icons": "icongenie generate -i src/icon/AppIcon.png --skip-trim",
     "dev": "quasar dev",
     "build": "quasar build"
   },
