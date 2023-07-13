@@ -3,6 +3,7 @@ import { createStore } from 'vuex'
 
 import tasks from './store-tasks'
 import settings from './store-settings'
+import auth from './store-auth'
 
 /*
  * If not building with SSR mode, you can
@@ -16,7 +17,9 @@ import settings from './store-settings'
 export default store(function (/* { ssrContext } */) {
   const Store = createStore({
     modules: {
-      tasks, settings
+      tasks,
+      settings,
+      auth
     },
 
     // enable strict mode (adds overhead!)

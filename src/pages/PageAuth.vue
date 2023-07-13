@@ -38,7 +38,7 @@
     },
     data() {
       return {
-        tab: 'register'
+        tab: 'login'
       }
     }
   }

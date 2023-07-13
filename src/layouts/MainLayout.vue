@@ -7,10 +7,20 @@
         </q-toolbar-title>
 
         <q-btn
+          v-if="!loggedIn"
           to="/auth"
           flat
           icon-right="account_circle"
           label="Login"
+          class="absolute-right"
+        />
+
+        <q-btn
+          v-else
+          @click="logoutUser"
+          flat
+          icon-right="account_circle"
+          label="Logout"
           class="absolute-right"
         />
       </q-toolbar>
@@ -64,21 +74,25 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+  import { mapState, mapActions } from 'vuex'
 
-export default defineComponent({
-  name: 'MainLayout',
-
-  data () {
-    return {
-      leftDrawerOpen: false,
-      navs: [
-        { label: 'Todo', icon: 'list', to: '/' },
-        { label: 'Settings', icon: 'settings', to: '/settings' }
-      ]
+  export default {
+    data () {
+      return {
+        leftDrawerOpen: false,
+        navs: [
+          { label: 'Todo', icon: 'list', to: '/' },
+          { label: 'Settings', icon: 'settings', to: '/settings' }
+        ]
+      }
+    },
+    computed: {
+      ...mapState('auth', ['loggedIn'])
+    },
+    methods: {
+      ...mapActions('auth', ['logoutUser'])
     }
   }
-})
 </script>
 
 <style lang="scss">
