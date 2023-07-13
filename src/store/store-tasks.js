@@ -45,18 +45,19 @@ const mutations = {
 }
 
 const actions = {
-  updateTask({ commit }, payload) {
-    commit('updateTask', payload)
+  updateTask({ dispatch }, payload) {
+    dispatch('firebaseUpdateTask', payload)
   },
-  deleteTask({ commit }, id) {
-    commit('deleteTask', id)
+  deleteTask({ dispatch }, id) {
+    dispatch('firebaseDeleteTask', id)
   },
-  addTask({ commit }, task) {
+  addTask({ dispatch }, task) {
     let taskId = uid()
     let payload = {
-      [taskId]: task
+      id: taskId, 
+      task: task
     }
-    commit('addTask', payload)
+    dispatch('firebaseAddTask', payload)
   },
   setSearch({ commit }, value) {
     commit('setSearch', value)
@@ -94,6 +95,26 @@ const actions = {
       const taskId = snapshot.key
       commit('deleteTask', taskId)
     })
+  },
+  firebaseAddTask({}, payload) {
+    const userId = auth.currentUser.uid
+    const taskId = payload.id
+    const task = payload.task
+    const newTaskRef = database.ref('tasks/' + userId + '/' + taskId)
+    newTaskRef.set(task)
+  },
+  firebaseUpdateTask({}, payload) {
+    const userId = auth.currentUser.uid
+    const taskId = payload.id
+    const task = payload.updates
+    const newTaskRef = database.ref('tasks/' + userId + '/' + taskId)
+    newTaskRef.update(task)
+  },
+  firebaseDeleteTask({}, id) {
+    const userId = auth.currentUser.uid
+    const taskId = id
+    const taskRef = database.ref('tasks/' + userId + '/' + taskId)
+    taskRef.remove()
   }
 }
 
