@@ -1,25 +1,26 @@
 import { uid } from 'quasar'
+import { auth, database } from 'boot/firebase'
 
 const state = {
   tasks: {
-    'ID1': {
-      name: 'Go to shop',
-      completed: false,
-      dueDate: '2023/07/07',
-      dueTime: '18:00'
-    },
-    'ID2': {
-      name: 'Get banana',
-      completed: true,
-      dueDate: '2023/07/08',
-      dueTime: '19:00'
-    },
-    'ID3': {
-      name: 'Get apple',
-      completed: false,
-      dueDate: '2023/07/09',
-      dueTime: '16:00'
-    }
+    // 'ID1': {
+    //   name: 'Go to shop',
+    //   completed: false,
+    //   dueDate: '2023/07/07',
+    //   dueTime: '18:00'
+    // },
+    // 'ID2': {
+    //   name: 'Get banana',
+    //   completed: true,
+    //   dueDate: '2023/07/08',
+    //   dueTime: '19:00'
+    // },
+    // 'ID3': {
+    //   name: 'Get apple',
+    //   completed: false,
+    //   dueDate: '2023/07/09',
+    //   dueTime: '16:00'
+    // }
   },
   search: '',
   sort: 'name'
@@ -53,7 +54,7 @@ const actions = {
   addTask({ commit }, task) {
     let taskId = uid()
     let payload = {
-      [taskId]: { ...task }
+      [taskId]: task
     }
     commit('addTask', payload)
   },
@@ -62,6 +63,37 @@ const actions = {
   },
   setSort({ commit }, value) {
     commit('setSort', value)
+  }, 
+  firebaseReadData({ commit }) {
+    const userId = auth.currentUser.uid
+    const userTasks = database.ref('tasks/' + userId)
+
+    // triggered when first logged in and add new task
+    userTasks.on('child_added', snapshot => {
+      const taskId = snapshot.key
+      const task = snapshot.val()
+      const payload = {
+        [taskId]: task
+      }
+      commit('addTask', payload)
+    })
+
+    // triggered when task updated
+    userTasks.on('child_changed', snapshot => {
+      const taskId = snapshot.key
+      const task = snapshot.val()
+      const payload = {
+        id: taskId, 
+        updates: task
+      }
+      commit('updateTask', payload)
+    })
+
+    // triggered when task deleted
+    userTasks.on('child_removed', snapshot => {
+      const taskId = snapshot.key
+      commit('deleteTask', taskId)
+    })
   }
 }
 

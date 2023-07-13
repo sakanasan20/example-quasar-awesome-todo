@@ -1,6 +1,5 @@
 import { auth } from 'boot/firebase'
 import { LocalStorage, Loading } from 'quasar'
-
 import { showErrorMessage } from 'src/functions/function-show-error-message'
 
 const state = {
@@ -29,13 +28,14 @@ const actions = {
   logoutUser() {
     auth.signOut()
   },
-  handleAuthStateChange({ commit }) {
+  handleAuthStateChange({ commit, dispatch }) {
     auth.onAuthStateChanged((user) => {
       Loading.hide()
       if (user) {
         commit('setLoggedIn', true)
         LocalStorage.set('loggedIn', true)
         this.$router.push('/').catch(e => {})
+        dispatch('tasks/firebaseReadData', null, { root: true })
       } else {
         commit('setLoggedIn', false)
         LocalStorage.set('loggedIn', false)
