@@ -16,13 +16,13 @@ const actions = {
   registerUser({}, payload) {
     Loading.show()
     auth.createUserWithEmailAndPassword(payload.email, payload.password)
-      .then(response => console.log(response))
+      // .then(response => console.log(response))
       .catch(error => showErrorMessage(error.message))
   },
   loginUser({}, payload) {
     Loading.show()
     auth.signInWithEmailAndPassword(payload.email, payload.password)
-      .then(response => console.log(response))
+      // .then(response => console.log(response))
       .catch(error => showErrorMessage(error.message))
   },
   logoutUser() {
@@ -32,11 +32,15 @@ const actions = {
     auth.onAuthStateChanged((user) => {
       Loading.hide()
       if (user) {
+        // Logged in
         commit('setLoggedIn', true)
         LocalStorage.set('loggedIn', true)
         this.$router.push('/').catch(e => {})
         dispatch('tasks/firebaseReadData', null, { root: true })
       } else {
+        // Logged out
+        commit('tasks/clearTasks', null, { root: true })
+        commit('tasks/setTasksDownloaded', false, { root: true })
         commit('setLoggedIn', false)
         LocalStorage.set('loggedIn', false)
         this.$router.replace('/auth').catch(e => {})

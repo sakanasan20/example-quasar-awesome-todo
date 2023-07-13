@@ -1,5 +1,6 @@
-import { uid } from 'quasar'
+import { uid, Notify } from 'quasar'
 import { auth, database } from 'boot/firebase'
+import { showErrorMessage } from 'src/functions/function-show-error-message'
 
 const state = {
   tasks: {
@@ -23,7 +24,8 @@ const state = {
     // }
   },
   search: '',
-  sort: 'name'
+  sort: 'name',
+  tasksDownloaded: false
 }
 
 const mutations = {
@@ -36,11 +38,17 @@ const mutations = {
   addTask(state, payload) {
     Object.assign(state.tasks, payload)
   },
+  clearTasks(state) {
+    state.tasks = {}
+  },
   setSearch(state, value) {
     state.search = value
   },
   setSort(state, value) {
     state.sort = value
+  },
+  setTasksDownloaded(state, value) {
+    state.tasksDownloaded = value
   }
 }
 
@@ -68,6 +76,14 @@ const actions = {
   firebaseReadData({ commit }) {
     const userId = auth.currentUser.uid
     const userTasks = database.ref('tasks/' + userId)
+
+    // triggered when data loaded
+    userTasks.once('value', snapshot => {
+      commit('setTasksDownloaded', true)
+    }, error => {
+      showErrorMessage(error.message)
+      this.$router.replace('/auth').catch(e => {})
+    })
 
     // triggered when first logged in and add new task
     userTasks.on('child_added', snapshot => {
@@ -101,20 +117,42 @@ const actions = {
     const taskId = payload.id
     const task = payload.task
     const newTaskRef = database.ref('tasks/' + userId + '/' + taskId)
-    newTaskRef.set(task)
+    newTaskRef.set(task, error => {
+      if (error) {
+        showErrorMessage(error.message)
+      } else {
+        Notify.create('Task added')
+      }
+    })
   },
   firebaseUpdateTask({}, payload) {
     const userId = auth.currentUser.uid
     const taskId = payload.id
     const task = payload.updates
     const newTaskRef = database.ref('tasks/' + userId + '/' + taskId)
-    newTaskRef.update(task)
+    newTaskRef.update(task, error => {
+      if (error) {
+        showErrorMessage(error.message)
+      } else {
+        const keys = Object.keys(task)
+        const isToggleCompleted = (keys.includes('completed') && keys.length == 1)
+        if (!isToggleCompleted) {
+          Notify.create('Task updated')
+        }
+      }
+    })
   },
   firebaseDeleteTask({}, id) {
     const userId = auth.currentUser.uid
     const taskId = id
     const taskRef = database.ref('tasks/' + userId + '/' + taskId)
-    taskRef.remove()
+    taskRef.remove(error => {
+      if (error) {
+        showErrorMessage(error.message)
+      } else {
+        Notify.create('Task deleted')
+      }
+    })
   }
 }
 
